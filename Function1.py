@@ -1,18 +1,34 @@
 import mysql.connector
+import Credential
 
-# Establish connection to GCP SQL
-mydb = mysql.connector.connect(user='root', password='CS348',
-                               host='34.68.129.232',
-                               database='smartapt')
+"""
+The conversion from unicode to ascii encoding should be noticed
+Each end will have to use different commands to convert information.
+"""
 
-cursor = mydb.cursor()
 
-query = "SELECT R.Name, R.ResidentId, S.SchoolName FROM Resident R JOIN Student S ON R.ResidentId = S.ResidentId;"
+def function1():
+    # Establish connection to GCP SQL
+    mydb = mysql.connector.connect(user=Credential.get_username(), password=Credential.get_password(),
+                                   host='34.68.129.232',
+                                   database='smartapt')
 
-cursor.execute(query)
+    cursor = mydb.cursor()
 
-for line in cursor:
-    print(line)
+    # Define the query
+    query = "SELECT R.Name, R.ResidentId, S.SchoolName FROM Resident R JOIN Student S ON R.ResidentId = S.ResidentId;"
 
-cursor.close()
-mydb.close()
+    cursor.execute(query)
+
+    info = ""
+    for line in cursor:
+        for part in line:
+            # IMPORTANT: Line below is for Colin's end
+            info += part + ',' + ' '
+
+            # IMPORTANT: Line below is for Jeff's end
+            # info += part.encode('ascii', 'ignore') + ',' + ' '
+
+    cursor.close()
+    mydb.close()
+    return info
