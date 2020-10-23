@@ -2,7 +2,7 @@ import mysql.connector
 import Credential
 
 """
-The conversion from unicode to ascii encoding should be noticed
+IMPORTANT: The conversion from unicode to ascii encoding should be noticed.
 Each end will have to use different commands to convert information.
 """
 
@@ -31,4 +31,5 @@ def function1():
 
     cursor.close()
     mydb.close()
+
     return info
