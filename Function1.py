@@ -16,18 +16,26 @@ def function1():
     cursor = mydb.cursor()
 
     # Define the query
-    query = "SELECT R.Name, R.ResidentId, S.SchoolName FROM Resident R JOIN Student S ON R.ResidentId = S.ResidentId;"
+    query = "SELECT R.Name, R.ResidentId, S.SchoolName, R.Career, R.RoomId, S.GraduationYear, S.Major" \
+            " FROM Resident R JOIN Student S ON R.ResidentId = S.ResidentId;"
 
     cursor.execute(query)
 
     info = ""
+    counter = 0
     for line in cursor:
         for part in line:
             # IMPORTANT: Line below is for Colin's end
-            info += part + ',' + ' '
+            if counter + 1 == len(line):
+                info += str(part) + "\n"
+            else:
+                info += str(part) + ', '
+                counter += 1
 
             # IMPORTANT: Line below is for Jeff's end
             # info += part.encode('ascii', 'ignore') + ',' + ' '
+
+        counter = 0
 
     cursor.close()
     mydb.close()

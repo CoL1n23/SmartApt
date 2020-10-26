@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    msg = "CS 348 Project, Purdue University"
+    msg = "CS348 Project, Purdue University"
     return render_template("index.html", data=msg)
 
 
