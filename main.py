@@ -12,8 +12,9 @@ def index():
 
 @app.route('/func1')
 def function1_page():
-    f1Content = Function1.function1()
-    return render_template("function_1.html", data=f1Content)
+    f1Content_1 = Function1.function1_1()
+    f1Content_2 = Function1.function1_2()
+    return render_template("function_1.html", data1=f1Content_1, data2=f1Content_2)
 
 
 @app.route('/func2')
