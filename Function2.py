@@ -4,17 +4,21 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 
 """
-CS348 Project
+CS348 Project - SmartApt
+Authors: Colin Wu, Jianwei Zhu
+Date: 12/8/20
+
+ORM (SQLAlchemy) is implemented in order to develop a secure query execution.
 
 IMPORTANT: The conversion from unicode to ascii encoding should be noticed.
-Each end will have to use different commands to convert information.
+Each author will have to use different commands to convert information on their ends.
 """
 
 
 def function2(room_num):
     engine = sqlalchemy.create_engine(
         'mysql+mysqlconnector://root:' + Credential.get_password() + '@34.68.129.232/smartapt',
-        echo=True)
+        echo=True, isolation_level='READ_COMMITTED')
 
     Base = declarative_base()
     Base.metadata.create_all(engine)
