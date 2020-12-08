@@ -11,7 +11,7 @@ Each end will have to use different commands to convert information.
 """
 
 
-def function1_1():
+def function2(room_num):
     engine = sqlalchemy.create_engine(
         'mysql+mysqlconnector://root:' + Credential.get_password() + '@34.68.129.232/smartapt',
         echo=True)
@@ -20,19 +20,19 @@ def function1_1():
     Base.metadata.create_all(engine)
 
     with engine.connect() as con:
-        cursor = con.execute("SELECT R.Name, R.ResidentId, S.SchoolName, R.Career, R.RoomId, S.GraduationYear, S.Major "
-                             "FROM Resident R JOIN Student S ON R.ResidentId = S.ResidentId "
-                             "WHERE R.Career = \"Student\";")
+        cursor = con.execute("SELECT R.RoomId, R.RoomType, R.Kitchen, R.NumOfBedrooms, R.NumOfBathrooms, R.Rent "
+                             "FROM Room R "
+                             "WHERE R.RoomId = \"" + room_num + "\";")
 
-    student_info = ""
+    room_info = ""
     counter = 0
     for line in cursor:
         for part in line:
             # IMPORTANT: Line below is for Colin's end
             if counter + 1 == len(line):
-                student_info += str(part) + "\n"
+                room_info += str(part) + "\n"
             else:
-                student_info += str(part) + ', '
+                room_info += str(part) + ', '
                 counter += 1
 
             # IMPORTANT: Line below is for Jeff's end
@@ -40,32 +40,30 @@ def function1_1():
 
         counter = 0
 
-    return student_info
+    """
+    # Establish connection to GCP SQL
+    mydb = mysql.connector.connect(user=Credential.get_username(), password=Credential.get_password(),
+                                   host='34.68.129.232',
+                                   database='smartapt')
 
+    cursor = mydb.cursor()
 
-def function1_2():
-    engine = sqlalchemy.create_engine(
-        'mysql+mysqlconnector://root:' + Credential.get_password() + '@34.68.129.232/smartapt',
-        echo=True)
+    # Define the query
+    query = "SELECT R.RoomId, R.RoomType, R.Kitchen, R.NumOfBedrooms, R.NumOfBathrooms, R.Rent " \
+            "FROM Room R " \
+            "WHERE R.RoomId = \"" + room_num + "\";"
 
-    Base = declarative_base()
-    Base.metadata.create_all(engine)
+    cursor.execute(query)
 
-    with engine.connect() as con:
-        cursor = con.execute(
-            "SELECT R.Name, R.ResidentId, E.CompanyName, R.Career, R.RoomId, E.Job, E.Salary, E.EducationStatus "
-            "FROM Resident R JOIN Employee E ON R.ResidentId = E.ResidentId "
-            "WHERE R.Career = \"Employee\";")
-
-    employee_info = ""
+    room_info = ""
     counter = 0
     for line in cursor:
         for part in line:
             # IMPORTANT: Line below is for Colin's end
             if counter + 1 == len(line):
-                employee_info += str(part) + "\n"
+                room_info += str(part) + "\n"
             else:
-                employee_info += str(part) + ', '
+                room_info += str(part) + ', '
                 counter += 1
 
             # IMPORTANT: Line below is for Jeff's end
@@ -73,4 +71,8 @@ def function1_2():
 
         counter = 0
 
-    return employee_info
+    cursor.close()
+    mydb.close()
+    """
+
+    return room_info
