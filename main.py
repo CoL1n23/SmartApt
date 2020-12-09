@@ -4,6 +4,7 @@ import Function2
 import Function3
 import Function4
 import Function5
+import Function6
 
 """
 CS348 Project - SmartApt
@@ -100,6 +101,18 @@ def function5_page():
     Function5.function5(name, companyName, job, salary, residentId, educationStatus)
 
     return render_template("function_5.html")
+
+
+@app.route('/func6')
+def function6():
+    return render_template("delete.html")
+
+
+@app.route('/func6', methods=['POST'])
+def function6_page():
+    residentId = request.form['residentId']
+    Function6.function6(residentId)
+    return render_template("function_6.html")
 
 
 if __name__ == "__main__":
